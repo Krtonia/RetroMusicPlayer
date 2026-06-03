@@ -28,7 +28,7 @@ fun List<SongEntity>.toSongs(): List<Song> {
     }
 }
 
-fun Song.toHistoryEntity(timePlayed: Long): HistoryEntity {
+fun Song.toHistoryEntity(timePlayed: Long, timesPlayed: Int = 1): HistoryEntity {
     return HistoryEntity(
         id = id,
         title = title,

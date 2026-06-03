@@ -258,6 +258,7 @@
     <string name="message_welcome"><![CDATA[Hello there! <br>Welcome to %s]]></string>
     <string name="my_name">Name</string>
     <string name="my_top_tracks">Most played</string>
+    <string name="most_played_songs">Most Played</string>
     <string name="never">Never</string>
     <string name="new_music_mix">New Music Mix</string>
     <string name="new_playlist_title">New playlist</string>

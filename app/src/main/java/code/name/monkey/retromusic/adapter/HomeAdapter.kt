@@ -56,6 +56,7 @@ class HomeAdapter(private val activity: AppCompatActivity) :
             RECENT_ARTISTS, TOP_ARTISTS -> ArtistViewHolder(layout)
             FAVOURITES -> PlaylistViewHolder(layout)
             TOP_ALBUMS, RECENT_ALBUMS -> AlbumViewHolder(layout)
+            MOST_PLAYED -> MostPlayedViewHolder(layout)
             else -> {
                 ArtistViewHolder(layout)
             }
@@ -120,6 +121,19 @@ class HomeAdapter(private val activity: AppCompatActivity) :
                     )
                 }
             }
+            MOST_PLAYED -> {
+                val viewHolder = holder as MostPlayedViewHolder
+                viewHolder.bindView(home)
+                // Tapping the section header navigates to the full list,
+                // reusing detailListFragment the same way other sections do.
+                viewHolder.clickableArea.setOnClickListener {
+                    it.findFragment<HomeFragment>().setSharedAxisXTransitions()
+                    activity.findNavController(R.id.fragment_container).navigate(
+                        R.id.detailListFragment,
+                        bundleOf("type" to MOST_PLAYED)
+                    )
+                }
+            }
         }
     }
 
@@ -157,6 +171,24 @@ class HomeAdapter(private val activity: AppCompatActivity) :
 
     @Suppress("UNCHECKED_CAST")
     private inner class PlaylistViewHolder(view: View) : AbsHomeViewItem(view) {
+        fun bindView(home: Home) {
+            title.setText(home.titleRes)
+            recyclerView.apply {
+                val songAdapter = SongAdapter(
+                    activity,
+                    home.arrayList as MutableList<Song>,
+                    R.layout.item_favourite_card
+                )
+                layoutManager = linearLayoutManager()
+                adapter = songAdapter
+            }
+        }
+    }
+
+    // Displays the Most Played songs
+    // Uses [R.layout.item_favourite_card] same card style as Favourites currently
+    @Suppress("UNCHECKED_CAST")
+    private inner class MostPlayedViewHolder(view: View) : AbsHomeViewItem(view) {
         fun bindView(home: Home) {
             title.setText(home.titleRes)
             recyclerView.apply {

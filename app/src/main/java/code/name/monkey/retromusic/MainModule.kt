@@ -41,7 +41,7 @@ private val roomModule = module {
 
     single {
         Room.databaseBuilder(androidContext(), RetroDatabase::class.java, "playlist.db")
-            .addMigrations(MIGRATION_23_24)
+            .addMigrations(MIGRATION_23_24, RetroDatabase.MIGRATION_24_25)
             .build()
     }
 
@@ -121,7 +121,7 @@ private val dataModule = module {
     } bind PlaylistRepository::class
 
     single {
-        RealTopPlayedRepository(get(), get(), get(), get())
+        RealTopPlayedRepository(get(), get(), get(), get(), get())
     } bind TopPlayedRepository::class
 
     single {
