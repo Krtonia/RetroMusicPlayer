@@ -26,15 +26,19 @@ interface HistoryDao {
     @Upsert
     suspend fun upsertSongInHistory(historyEntity: HistoryEntity)
 
-    @Query("DELETE FROM HistoryEntity WHERE id= :songId")
+    // Returns how many times a song has been played
+    @Query("SELECT * FROM history_table ORDER BY times_played DESC LIMIT :limit")
+    fun mostPlayedSongs(limit: Int = 50): List<HistoryEntity>
+
+    @Query("DELETE FROM history_table WHERE id= :songId")
     fun deleteSongInHistory(songId: Long)
 
-    @Query("SELECT * FROM HistoryEntity ORDER BY time_played DESC LIMIT $HISTORY_LIMIT")
+    @Query("SELECT * FROM history_table ORDER BY time_played DESC LIMIT $HISTORY_LIMIT")
     fun historySongs(): List<HistoryEntity>
 
-    @Query("SELECT * FROM HistoryEntity ORDER BY time_played DESC LIMIT $HISTORY_LIMIT")
+    @Query("SELECT * FROM history_table ORDER BY time_played DESC LIMIT $HISTORY_LIMIT")
     fun observableHistorySongs(): LiveData<List<HistoryEntity>>
 
-    @Query("DELETE FROM HistoryEntity")
+    @Query("DELETE FROM history_table")
     suspend fun clearHistory()
 }

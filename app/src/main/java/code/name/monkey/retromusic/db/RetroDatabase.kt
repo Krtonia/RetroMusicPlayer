@@ -16,14 +16,26 @@ package code.name.monkey.retromusic.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [PlaylistEntity::class, SongEntity::class, HistoryEntity::class, PlayCountEntity::class],
-    version = 24,
+    version = 25,
     exportSchema = false
 )
 abstract class RetroDatabase : RoomDatabase() {
     abstract fun playlistDao(): PlaylistDao
     abstract fun playCountDao(): PlayCountDao
     abstract fun historyDao(): HistoryDao
+
+    companion object {
+        val MIGRATION_24_25 = object : Migration(24, 25) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "ALTER TABLE history_table ADD COLUMN times_played INTEGER NOT NULL DEFAULT 1"
+                )
+            }
+        }
+    }
 }

@@ -18,8 +18,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
-class HistoryEntity(
+@Entity(tableName = "history_table")
+data class HistoryEntity(
     @PrimaryKey
     val id: Long,
     val title: String,
@@ -42,5 +42,8 @@ class HistoryEntity(
     @ColumnInfo(name = "album_artist")
     val albumArtist: String?,
     @ColumnInfo(name = "time_played")
-    val timePlayed: Long
+    val timePlayed: Long,
+    @ColumnInfo(name = "times_played", defaultValue = "1")
+    val timesPlayed: Int = 1
 )
+
